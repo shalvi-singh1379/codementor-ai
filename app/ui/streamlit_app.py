@@ -3,13 +3,14 @@ import requests
 import json
 import uuid
 import base64
+import os
 
 def get_base64_image(image_path):
     with open(image_path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 bg_image = get_base64_image("app/ui/background.jpg")
 
-API_URL = "http://localhost:8000/chat"
+API_URL = os.environ.get("API_URL", "http://localhost:8000/chat")
 
 st.set_page_config(
     page_title="CodeMentor AI",
