@@ -29,7 +29,7 @@ st.markdown(f"""
         color: #e6edf3;
     }}
     [data-testid="stSidebar"] {{ background-color: #161b22; border-right: 1px solid #30363d; }}
-    [data-testid="stChatMessage"] {{ background-color: rgba(22, 27, 34, 0.85); border: 1px solid #30363d; border-radius: 12px; padding: 12px; margin-bottom: 8px; backdrop-filter: blur(10px); isolation: isolate; }}
+    [data-testid="stChatMessage"] {{ background-color: rgba(13, 17, 23, 0.95); border: 1px solid #30363d; border-radius: 12px; padding: 12px; margin-bottom: 8px; }}
     code {{ background-color: #1c2128 !important; color: #79c0ff !important; border-radius: 6px; }}
     pre {{ background-color: #1c2128 !important; position: relative; z-index: 1; }}
     pre code {{ display: block; padding: 16px !important; border: 1px solid #30363d; background-color: #1c2128 !important; }}
@@ -110,13 +110,12 @@ st.markdown("<h1 style='font-size: 2rem; font-weight: 700; background: linear-gr
 st.markdown("""
 <div style="
     display: inline-block;
-    background: rgba(22,27,34,0.85);
+    background: rgba(13,17,23,0.95);
     border: 1px solid rgba(96,165,250,0.4);
     border-radius: 10px;
     padding: 8px 14px;
     margin-top: -10px;
     margin-bottom: 24px;
-    backdrop-filter: blur(8px);
 ">
     <span style="
         color: #e6edf3;
