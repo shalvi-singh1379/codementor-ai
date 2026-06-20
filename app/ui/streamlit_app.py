@@ -29,10 +29,6 @@ st.markdown(f"""
         color: #e6edf3;
     }}
     [data-testid="stSidebar"] {{ background-color: #161b22; border-right: 1px solid #30363d; }}
-    [data-testid="stChatMessage"] {{ background-color: rgba(13, 17, 23, 0.95); border: 1px solid #30363d; border-radius: 12px; padding: 12px; margin-bottom: 8px; }}
-    code {{ background-color: #1c2128 !important; color: #79c0ff !important; border-radius: 6px; }}
-    pre {{ background-color: #1c2128 !important; }}
-    pre code {{ display: block; padding: 16px !important; border: 1px solid #30363d; background-color: #1c2128 !important; }}
     .stButton button {{ background-color: #21262d; color: #e6edf3; border: 1px solid #30363d; border-radius: 8px; }}
     .stButton button:hover {{ background-color: #30363d; border-color: #60a5fa; }}
 </style>
