@@ -13,20 +13,23 @@ CHUNK_SIZE = 2000
 CHUNK_OVERLAP = 200
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
+_collection_cache = None
+
 def get_chroma_collection():
-    """creates or connects to the ChromaDB collection"""
+    global _collection_cache
+    if _collection_cache is not None:
+        return _collection_cache
+
     client = chromadb.PersistentClient(path=CHROMA_DIR)
 
-    embedding_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
-        model_name=EMBEDDING_MODEL
-    )
+    embedding_fn = embedding_functions.DefaultEmbeddingFunction()  # ONNX MiniLM-L6-v2, no torch needed
 
     collection = client.get_or_create_collection(
         name=COLLECTION_NAME,
         embedding_function=embedding_fn,
         metadata={"hnsw:space": "cosine"}
     )
-
+    _collection_cache = collection
     return collection
 
 
@@ -74,7 +77,6 @@ def chunk_text(text: str, source_url: str) -> list[dict]:
 
 
 def index_docs():
-    from sentence_transformers import SentenceTransformer
     """main function: reads all txt files, chunks them, stores in ChromaDB"""
     collection = get_chroma_collection()
 
@@ -88,47 +90,30 @@ def index_docs():
     print(f"found {len(txt_files)} doc files to index")
 
     all_chunks = []
-
     for txt_file in txt_files:
         if txt_file.name == "download_docs.py":
             continue
-
         with open(txt_file, "r", encoding="utf-8") as f:
             text = f.read()
-
         chunks = chunk_text(text, txt_file.name)
         all_chunks.extend(chunks)
         print(f"  chunked {txt_file.name}: {len(chunks)} chunks")
 
     print(f"\ntotal chunks to embed: {len(all_chunks)}")
+    print("storing in ChromaDB (embeddings generated automatically)...")
 
-    # embed all chunks at once using batched processing
-    print("generating embeddings for all chunks at once...")
-    embedding_model = SentenceTransformer(EMBEDDING_MODEL)
-    texts = [c["text"] for c in all_chunks]
-    embeddings = embedding_model.encode(
-        texts,
-        batch_size=32,
-        show_progress_bar=True
-    )
-
-    print("storing in ChromaDB...")
     batch_size = 100
     for i in range(0, len(all_chunks), batch_size):
         batch = all_chunks[i:i + batch_size]
-        batch_embeddings = embeddings[i:i + batch_size].tolist()
-
         collection.add(
             documents=[c["text"] for c in batch],
             metadatas=[c["metadata"] for c in batch],
-            embeddings=batch_embeddings,
             ids=[f"chunk_{i + j}" for j, _ in enumerate(batch)]
         )
         print(f"  stored batch {i//batch_size + 1}/{(len(all_chunks)-1)//batch_size + 1}")
 
     print(f"\ndone! {collection.count()} chunks stored in ChromaDB")
     return collection
-
 
 if __name__ == "__main__":
     index_docs()
