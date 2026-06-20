@@ -4,7 +4,13 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime, timezone
 import uuid
 
-DATABASE_URL = "postgresql://postgres:codementor123@localhost:5432/codementor"
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL",
+    "postgresql://postgres:codementor123@localhost:5432/codementor"
+)
+
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
