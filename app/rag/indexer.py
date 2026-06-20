@@ -3,7 +3,7 @@ import re
 import chromadb
 from chromadb.utils import embedding_functions
 from pathlib import Path
-from sentence_transformers import SentenceTransformer
+#from sentence_transformers import SentenceTransformer
 
 # ----- configuration -----
 DOCS_DIR = Path("data/docs")
@@ -12,7 +12,6 @@ COLLECTION_NAME = "python_docs"
 CHUNK_SIZE = 2000
 CHUNK_OVERLAP = 200
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
-
 
 def get_chroma_collection():
     """creates or connects to the ChromaDB collection"""
@@ -75,6 +74,7 @@ def chunk_text(text: str, source_url: str) -> list[dict]:
 
 
 def index_docs():
+    from sentence_transformers import SentenceTransformer
     """main function: reads all txt files, chunks them, stores in ChromaDB"""
     collection = get_chroma_collection()
 
