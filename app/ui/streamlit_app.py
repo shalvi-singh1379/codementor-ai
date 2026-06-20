@@ -29,9 +29,10 @@ st.markdown(f"""
         color: #e6edf3;
     }}
     [data-testid="stSidebar"] {{ background-color: #161b22; border-right: 1px solid #30363d; }}
-    [data-testid="stChatMessage"] {{ background-color: rgba(22, 27, 34, 0.85); border: 1px solid #30363d; border-radius: 12px; padding: 12px; margin-bottom: 8px; backdrop-filter: blur(10px); }}
+    [data-testid="stChatMessage"] {{ background-color: rgba(22, 27, 34, 0.85); border: 1px solid #30363d; border-radius: 12px; padding: 12px; margin-bottom: 8px; backdrop-filter: blur(10px); isolation: isolate; }}
     code {{ background-color: #1c2128 !important; color: #79c0ff !important; border-radius: 6px; }}
-    pre code {{ display: block; padding: 16px !important; border: 1px solid #30363d; }}
+    pre {{ background-color: #1c2128 !important; position: relative; z-index: 1; }}
+    pre code {{ display: block; padding: 16px !important; border: 1px solid #30363d; background-color: #1c2128 !important; }}
     .stButton button {{ background-color: #21262d; color: #e6edf3; border: 1px solid #30363d; border-radius: 8px; }}
     .stButton button:hover {{ background-color: #30363d; border-color: #60a5fa; }}
 </style>
